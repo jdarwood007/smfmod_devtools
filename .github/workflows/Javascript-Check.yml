@@ -1,0 +1,21 @@
+name: Javascript Checks
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  workflow_dispatch:
+jobs:          
+  lint:
+    runs-on: ubuntu-latest
+    name: LINT Checks
+    steps:
+      - uses: actions/checkout@master
+        with:
+          submodules: true
+      - name: Javascript LINT
+        uses: tj-actions/eslint-changed-files@v4
+        with:
+          config-path: .github/eslintrc.js
