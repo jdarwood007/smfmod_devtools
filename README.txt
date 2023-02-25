@@ -11,3 +11,7 @@ This customization is intended to only be used with customizations that do not m
 To use this, your customization must be in the folder format, not in a compressed archive (.tar.gz or .zip) inside the Packages folder.
 Extended information on how to use this tool can be found here: https://github.com/jdarwood007/smfmod_devtools/wiki
 
+Want some additional developer tools?
+	- Error Log Popup: https://custom.simplemachines.org/index.php?mod=4323
+	- Dev Center: https://custom.simplemachines.org/index.php?mod=3481
+	- Dev tools category: https://custom.simplemachines.org/index.php?action=mods;id_type=25
