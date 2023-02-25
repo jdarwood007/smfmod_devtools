@@ -32,8 +32,12 @@ $(document).ready(function() {
 function devtools_formhandler(e) {
 	e.preventDefault();
 	e.stopPropagation();
-	
+
 	let form = $(e.data.form ?? "div#devtools_menu #frmLogin");
+	let formData = form.serializeArray();
+
+	/* Inject the button/input that was clicked */
+	formData.push({ name: e.originalEvent.submitter.name, value: e.originalEvent.submitter.value });
 
 	$.ajax({
 		url: form.prop("action") + ";ajax",
@@ -44,7 +48,7 @@ function devtools_formhandler(e) {
 		xhrFields: {
 			withCredentials: typeof allow_xhjr_credentials !== "undefined" ? allow_xhjr_credentials : false
 		},
-		data: form.serialize(),
+		data: formData,
 		success: function(data, status, xhr) {
 			if (e.data.frame.length > 0) {
 				$(document).find(e.data.frame).html($(data).html());

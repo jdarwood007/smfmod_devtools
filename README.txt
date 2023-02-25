@@ -8,3 +8,6 @@ This gives a popup window for you to work with a package to do actions such as:
 
 This is intended for development purposes, not production uses.
 This customization is intended to only be used with customizations that do not modify SMF sources (boardmod or xml) and are hook only.
+To use this, your customization must be in the folder format, not in a compressed archive (.tar.gz or .zip) inside the Packages folder.
+Extended information on how to use this tool can be found here: https://github.com/jdarwood007/smfmod_devtools/wiki
+

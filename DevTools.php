@@ -26,9 +26,11 @@ class DevTools
 	private string $scripturl;
 	private array $context;
 	private array $smcFunc;
-	private array $modSettings;
+	/* This is array in "theory" only.  SMF sometimes will null this when pulling from cache and causes an error */
+	private ?array $modSettings;
 	private array $txt;
-	private bool $db_show_debug;
+	/* Sometimes in SMF, this is null, which is unusal for a boolean */
+	private ?bool $db_show_debug;
 
 	/*
 	 * Builds the main DevTools object.  This also loads a few globals into easy to access properties, some by reference so we can update them

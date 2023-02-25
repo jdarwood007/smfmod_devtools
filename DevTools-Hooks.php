@@ -216,8 +216,8 @@ class DevToolsHooks
 					'data' => [
 						'function' => function($data) {
 							if (is_null($data['instance']))
-								return '<input type="submit" value="' . $this->dt->txt('search') . '" />';
-							return '<button name="edit" value="' . $data['key'] . '">' . $this->dt->txt('edit') . '</button>';
+								return '<input type="submit" value="' . $this->dt->txt('search') . '" class="button" />';
+							return '<button name="edit" value="' . $data['key'] . '" class="button">' . $this->dt->txt('edit') . '</button>';
 						},
 					],
 				],
@@ -507,12 +507,15 @@ class DevToolsHooks
 	private function getHookData(string $hookID): array
 	{
 		$hooks = $this->getRawHooks();
-		$hook = array_filter(
-			$hooks,
-			function($value) use ($hookID) {
-				return stripos($value['key'], $hookID) > -1;
-			}
-		);
+		$hook = [];
+
+		if ($hookID !== '')
+			$hook = array_filter(
+				$hooks,
+				function($value) use ($hookID) {
+					return stripos($value['key'], $hookID) > -1;
+				}
+			);
 
 		// Can't toggle this, its not  unique.
 		if (count($hook) !== 1)
