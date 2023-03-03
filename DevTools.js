@@ -50,7 +50,7 @@ function devtools_formhandler(e) {
 		},
 		data: formData,
 		success: function(data, status, xhr) {
-			if (e.data.frame.length > 0) {
+			if (typeof(e.data) !== 'undefined' && typeof(e.data.frame) !== 'undefined' && e.data.frame.length > 0) {
 				$(document).find(e.data.frame).html($(data).html());
 			}
 			else if (data.indexOf("<bo" + "dy") > -1) {
@@ -68,7 +68,7 @@ function devtools_formhandler(e) {
 				form.parent().html($(data).html());
 			}
 
-			$("div#devtools_menu").customScrollbar().resize();
+			($("div#devtools_menu").data("scrollable")).resize();
 			checkSuccessFailPrompt(data);
 		},
 		error: function(xhr) {
@@ -81,7 +81,7 @@ function devtools_formhandler(e) {
 			else
 				form.parent().html($(data).filter("#fatal_error").html());
 
-			$("div#devtools_menu").customScrollbar().resize();
+			($("div#devtools_menu").data("scrollable")).resize();
 			checkSuccessFailPrompt(data);
 		}
 	});
@@ -115,7 +115,7 @@ function devtools_links(e) {
 			else
 				contentBox.html(data);
 
-			$("div#devtools_menu").customScrollbar().resize();
+			($("div#devtools_menu").data("scrollable")).resize();
 			checkSuccessFailPrompt(data);
 		},
 		error: function(xhr) {
@@ -128,7 +128,7 @@ function devtools_links(e) {
 			else
 				contentBox.html($(data).filter("#fatal_error").html());
 
-			$("div#devtools_menu").customScrollbar().resize();
+			($("div#devtools_menu").data("scrollable")).resize();
 			checkSuccessFailPrompt(data);
 		}
 	});
@@ -141,7 +141,7 @@ function checkSuccessFailPrompt(data)
 	{
 		$("#devtool_success").fadeOut(2000, function() {
 			$(this).remove();
-			$("div#devtools_menu").customScrollbar().resize();
+			($("div#devtools_menu").data("scrollable")).resize();
 		});
 	}
 }
