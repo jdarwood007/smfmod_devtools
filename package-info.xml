@@ -2,7 +2,7 @@
 <package-info xmlns="http://www.simplemachines.org/xml/package-info" xmlns:smf="http://www.simplemachines.org/">
 	<id>sleepy:devtools</id>
 	<name>Developer Tools</name>
-	<version>1.0.1</version>
+	<version>1.0.2</version>
 	<type>modification</type>
 
 	<install for="SMF 2.1.*">
