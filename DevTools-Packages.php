@@ -318,7 +318,7 @@ class DevToolsPackages
 		// Filter out anything with an extension, we don't support working with compressed files.
 		// list_getPackages is from SMF in Packages.php
 		return array_filter(list_getPackages(...$args), function($p) {
-			return empty(pathinfo($p['filename'], PATHINFO_EXTENSION)) && (!empty($this->modSettings['dt_showAllPackages']) || strpos($p['id'], $this->devToolsPackageID) === false);
+			return $this->isValidPackage($p['filename']) && (!empty($this->modSettings['dt_showAllPackages']) || strpos($p['id'], $this->devToolsPackageID) === false);
 		});
 	}
 
