@@ -56,3 +56,9 @@ function template_hooksIndex()
 {
 	template_show_list('hooks_list');
 }
+
+/* This just calls the template for showing a list on our hooks */
+function template_filesIndex()
+{
+	template_show_list('packages_lists_modification');
+}

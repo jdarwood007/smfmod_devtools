@@ -4,7 +4,7 @@
  * The class for DevTools Hooks.
  * @package DevTools
  * @author SleePy <sleepy @ simplemachines (dot) org>
- * @copyright 2022
+ * @copyright 2023
  * @license 3-Clause BSD https://opensource.org/licenses/BSD-3-Clause
  * @version 1.0
 */

@@ -6,7 +6,7 @@
  * @author SleePy <sleepy @ simplemachines (dot) org>
  * @copyright 2022
  * @license 3-Clause BSD https://opensource.org/licenses/BSD-3-Clause
- * @version 1.0
+ * @version 1.1
 */
 class DevTools
 {
@@ -42,7 +42,7 @@ class DevTools
 			$this->{$f} = &$GLOBALS[$f];
 
 		$this->loadLanguage(['DevTools', 'Admin']);
-		$this->loadSources(['DevToolsPackages', 'DevToolsHooks', 'Subs-Menu']);
+		$this->loadSources(['DevToolsPackages', 'DevToolsHooks', 'DevToolsFile', 'Subs-Menu']);
 	}
 
 	/*
@@ -179,6 +179,7 @@ class DevTools
 			'index' => 'action_index',
 			'packages' => 'action_packages',
 			'hooks' => 'action_hooks',
+			'files' => 'action_files',
 		];
 
 		$this->{$this->getAreaAction($areas, 'packages')}();
@@ -218,6 +219,23 @@ class DevTools
 			$this->context['instances']['DevToolsHooks'] = new DevToolsHooks;
 
 		$this->context['instances']['DevToolsHooks']->{$this->getSubAction($subActions, 'list')}();
+		$this->setSubTemplate($this->getSubAction($subActions, 'list'));
+	}
+
+	/*
+	 * When the area=files, this chooses the sub action we want to work with.
+	*/
+	private function action_files(): void
+	{
+		$subActions = [
+			'list' => 'filesIndex',
+			'archive' => 'downloadArchive',
+		];
+
+		if (!isset($this->context['instances']['DevToolsFiles']))
+			$this->context['instances']['DevToolsFiles'] = new DevToolsFiles;
+
+		$this->context['instances']['DevToolsFiles']->{$this->getSubAction($subActions, 'list')}();
 		$this->setSubTemplate($this->getSubAction($subActions, 'list'));
 	}
 
@@ -363,6 +381,10 @@ class DevTools
 				'text' => 'hooks_title_list',
 				'url' => $this->scripturl . '?action=devtools;area=hooks',
 			],
+			'files' => [
+				'text' => 'files_title_list',
+				'url' => $this->scripturl . '?action=devtools;area=files',
+			],
 		];
 
 		$this->context['devtools_buttons'][$active]['active'] ?? null;
@@ -387,7 +409,7 @@ class DevTools
 	public function loadSources(array $sources): void
 	{
 		array_map(function($rs) {
-			require_once($GLOBALS['sourcedir'] . '/' . strtr($rs, ['DevTools' => 'DevTools-']) . '.php');
+			require_once($GLOBALS['sourcedir'] . '/' . strtr($rs, ['DevTools' => 'DevTools/DevTools-']) . '.php');
 		}, $sources);
 	}
 
