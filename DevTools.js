@@ -40,7 +40,7 @@ function devtools_formhandler(e) {
 	formData.push({ name: e.originalEvent.submitter.name, value: e.originalEvent.submitter.value });
 
 	$.ajax({
-		url: form.prop("action") + ';ajax',
+		url: form.prop('action') + ';ajax',
 		method: 'POST',
 		headers: {
 			'X-SMF-AJAX': 1
@@ -79,9 +79,9 @@ function devtools_formhandler(e) {
 				document.close();
 			}
 			else
-				form.parent().html($(data).filter("#fatal_error").html());
+				form.parent().html($(data).filter('#fatal_error').html());
 
-			($("div#devtools_menu").data("scrollable")).resize();
+			($('div#devtools_menu').data('scrollable')).resize();
 			checkSuccessFailPrompt(data);
 		}
 	});
@@ -111,7 +111,7 @@ function devtools_links(e) {
 			withCredentials: typeof allow_xhjr_credentials !== 'undefined' ? allow_xhjr_credentials : false
 		},
 		success: function(data, status, xhr) {
-			if (data.indexOf("<bo" + "dy") > -1) {
+			if (data.indexOf('<bo' + 'dy') > -1) {
 				document.open();
 				document.write(data);
 				document.close();
@@ -124,7 +124,7 @@ function devtools_links(e) {
 		},
 		error: function(xhr) {
 			var data = xhr.responseText;
-			if (data.indexOf("<bo" + "dy") > -1) {
+			if (data.indexOf('<bo' + 'dy') > -1) {
 				document.open();
 				document.write(data);
 				document.close();
