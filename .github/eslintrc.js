@@ -32,9 +32,9 @@ module.exports = {
 		]
 	},
 	'globals': {
-		'var2': 'smf_scripturl',
-		'var2': 'txt_devtools_menu',
-		'var2': 'smc_PopupMenu',
-		'var2': 'allow_xhjr_credentials'
+		'smf_scripturl': 'readonly',
+		'txt_devtools_menu': 'readonly',
+		'smc_PopupMenu': 'readonly',
+		'allow_xhjr_credentials': 'readonly'
 	}
 };
