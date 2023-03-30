@@ -204,7 +204,7 @@ class DevToolsFiles
 
 		foreach ($this->providers as $provider)
 			foreach ($this->extensions as $ext)
-				$actions[$ext . $provider] = '<a href="' . $this->scripturl . '?action=devtools;area=files;sa=archive;package=' . $package['filename'] . ';extension=' . $ext . ';provider=' . $provider . '" class="button floatnone">' . $this->dt->txt('devtools_extension_' . $ext) . '</a>';
+				$actions[$ext . $provider] = '<a href="' . $this->scripturl . '?action=devtools;area=files;sa=archive;package=' . $package['filename'] . ';extension=' . $ext . ';provider=' . $provider . '" class="button floatnone" data-nopopup="true">' . $this->dt->txt('devtools_extension_' . $ext) . '</a>';
 
 		return implode('', $actions);
 	}
