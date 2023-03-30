@@ -63,6 +63,9 @@ class DevTools
 		// Fixes a minor bug where the content isn't sized right.
 		addInlineCss('
 			div#devtools_menu .half_content { width: 49%;}
+			@media (max-width: 855px) {
+				li a#devtools_menu_top {display: none;}
+			}
 		');
 	}
 
