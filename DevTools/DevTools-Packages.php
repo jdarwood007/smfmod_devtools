@@ -4,9 +4,9 @@
  * The class for DevTools Packages.
  * @package DevTools
  * @author SleePy <sleepy @ simplemachines (dot) org>
- * @copyright 2022
+ * @copyright 2023
  * @license 3-Clause BSD https://opensource.org/licenses/BSD-3-Clause
- * @version 1.0
+ * @version 1.1
 */
 class DevToolsPackages
 {
@@ -88,7 +88,7 @@ class DevToolsPackages
 		else if (($basedir = $this->getPackageBasedir($package)) == '')
 			fatal_lang_error('package_get_error_not_found', false);
 
-		$infoFile = $this->getPackageInfo($basedir . '/' . $this->packageInfoName);
+		$infoFile = $this->getPackageInfo($basedir . DIRECTORY_SEPARATOR . $this->packageInfoName);
 		if (!is_a($infoFile, 'xmlArray'))
 			fatal_lang_error('package_get_error_missing_xml', false);
 
@@ -120,7 +120,7 @@ class DevToolsPackages
 		else if (($basedir = $this->getPackageBasedir($package)) == '')
 			fatal_lang_error('package_get_error_not_found', false);
 
-		$infoFile = $this->getPackageInfo($basedir . '/' . $this->packageInfoName);
+		$infoFile = $this->getPackageInfo($basedir . DIRECTORY_SEPARATOR . $this->packageInfoName);
 		if (!is_a($infoFile, 'xmlArray'))
 			fatal_lang_error('package_get_error_missing_xml', false);
 
@@ -153,7 +153,7 @@ class DevToolsPackages
 		else if (($basedir = $this->getPackageBasedir($package)) == '')
 			fatal_lang_error('package_get_error_not_found', false);
 
-		$infoFile = $this->getPackageInfo($basedir . '/' . $this->packageInfoName);
+		$infoFile = $this->getPackageInfo($basedir . DIRECTORY_SEPARATOR . $this->packageInfoName);
 		if (!is_a($infoFile, 'xmlArray'))
 			fatal_lang_error('package_get_error_missing_xml', false);
 
@@ -195,7 +195,7 @@ class DevToolsPackages
 		else if (($basedir = $this->getPackageBasedir($package)) == '')
 			fatal_lang_error('package_get_error_not_found', false);
 
-		$infoFile = $this->getPackageInfo($basedir . '/' . $this->packageInfoName);
+		$infoFile = $this->getPackageInfo($basedir . DIRECTORY_SEPARATOR . $this->packageInfoName);
 		if (!is_a($infoFile, 'xmlArray'))
 			fatal_lang_error('package_get_error_missing_xml', false);
 
@@ -223,6 +223,8 @@ class DevToolsPackages
 
 	/*
 	 * Returns an array that will be passed into SMF's createList logic to build a packages listing.
+	*
+	 * @calls: $sourcedir/Subs.php:timeformat
 	*/
 	private function buildPackagesList(): array
 	{
@@ -432,7 +434,7 @@ class DevToolsPackages
 	*/
 	private function getRequestedPackage(): string
 	{
-		return (string) preg_replace('~[^a-z0-9\-_\.]+~i', '-', $_REQUEST['package']);
+		return (string) preg_replace('~[^a-z0-9\-_\.]+~i', '-', $_REQUEST['package'] ?? '');
 	}
 	
 	/*
@@ -443,7 +445,7 @@ class DevToolsPackages
 	*/
 	private function isValidPackage(string $package): bool
 	{
-		return is_dir($this->packagesdir . '/' . $package);
+		return is_dir($this->packagesdir . DIRECTORY_SEPARATOR . $package);
 	}
 
 	/*
@@ -456,12 +458,12 @@ class DevToolsPackages
 	private function getPackageBasedir(string $package): string
 	{
 		// Simple, its at the file root
-		if (file_exists($this->packagesdir . '/' . $package . '/' . $this->packageInfoName))
-			return $this->packagesdir . '/' . $package;
+		if (file_exists($this->packagesdir . DIRECTORY_SEPARATOR . $package . DIRECTORY_SEPARATOR . $this->packageInfoName))
+			return $this->packagesdir . DIRECTORY_SEPARATOR . $package;
 
 		$files = new RecursiveIteratorIterator(
 			new RecursiveDirectoryIterator(
-				$this->packagesdir . '/' . $package,
+				$this->packagesdir . DIRECTORY_SEPARATOR . $package,
 				RecursiveDirectoryIterator::SKIP_DOTS
 			)
 		);
@@ -567,8 +569,8 @@ class DevToolsPackages
 				continue;
 
 			$hooks[] = [
-				'pkg' => $action->exists('@from') ? $this->parsePath($action->fetch('@from')) : $basedir . '/' . $action->fetch('@name'),
-				'smf' => $this->parsePath($action->fetch('@destination')) . '/' . basename($action->fetch('@name'))
+				'pkg' => $action->exists('@from') ? $this->parsePath($action->fetch('@from')) : $basedir . DIRECTORY_SEPARATOR . $action->fetch('@name'),
+				'smf' => $this->parsePath($action->fetch('@destination')) . DIRECTORY_SEPARATOR . basename($action->fetch('@name'))
 			];
 		}
 
@@ -607,6 +609,8 @@ class DevToolsPackages
 			// Do a empty file check.
 			if (!$op['res'] && is_file($op[$dst]) && package_get_contents($op[$src]) == package_get_contents($op[$dst]))
 				$op['res'] = true;
+			elseif (is_dir($op[$src]) && is_dir($op[$dst]))
+				$op['res'] = $this->validateDirectoriesAreEqual($op[$src], $op[$dst]);
 				
 			return $op;
 		}, $ops);
@@ -692,7 +696,7 @@ class DevToolsPackages
 	private function cleanPath(string $path): string
 	{
 		return strtr($path, [
-			$this->settings['default_theme_dir'] . '/' . basename($GLOBALS['settings']['default_images_url']) => '$imagesdir',
+			$this->settings['default_theme_dir'] . DIRECTORY_SEPARATOR . basename($GLOBALS['settings']['default_images_url']) => '$imagesdir',
 			$this->settings['default_theme_dir'] . '/languages' => '$languagedir',
 			$this->settings['default_theme_dir'] => '$themedir',
 			$this->modSettings['avatar_directory'] => '$avatardir',
@@ -702,5 +706,40 @@ class DevToolsPackages
 			$this->packagesdir => '$packagesdir',
 			$this->boarddir => '$boarddir',
 		]);
+	}
+
+	/*
+	 * Compare two directories to see if they appear consistent.
+	 * We do this by reading them, finding their sha1_file, json_encode the array and then sha1 that string.
+	 * By comparing two directories this way, we should end up with the same sha1 hash.
+	 *
+	 * @param string $src Source directory to compare.
+	 * @param string $dst Destination directory to compare.
+	 * @return bool True if they match, false otherwise.
+	*/
+	private function validateDirectoriesAreEqual(string $src, string $dst): bool
+	{
+		$srcFiles = $dstFiles = [];
+
+		// Get our files.
+		foreach (['src', 'dst'] as $op)
+		{
+			$s = new RecursiveIteratorIterator(
+				new RecursiveDirectoryIterator(
+					$$op,
+					RecursiveDirectoryIterator::SKIP_DOTS
+				),
+			);
+
+			foreach ($s as $file)
+			{
+				if ($file->isDir())
+					return true;
+				$basePath = substr($file->getPathname(), strlen($$op . DIRECTORY_SEPARATOR), null);
+				${$op . 'Files'}[$basePath] = sha1_file($file->getPathname());		
+			}
+		}
+
+		return sha1(json_encode($srcFiles)) == sha1(json_encode($dstFiles));
 	}
 }

@@ -1,5 +1,6 @@
 <?php
 $txt['devtools_menu'] = 'Developer Tools';
+$txt['files_title_list'] = 'Archives';
 
 /* Packages stuff */
 $txt['devtools_packages_uninstall'] = 'Uninstall Hooks';
@@ -13,11 +14,13 @@ $txt['devtools_success_uninstall'] = 'Succesfully uninstalled hooks';
 $txt['devtools_success_syncin'] = 'Succesfully Synced Files to Packages';
 $txt['devtools_success_syncout'] = 'Succesfully Synced Files to SMF';
 
-
 $txt['devtools_instance'] = 'Instance';
-
 
 $txt['devtools_success_toggle'] = 'Succesfully toggled hook';
 $txt['devtools_success_addhook'] = 'Succesfully added hook';
 $txt['devtools_success_modifyhook'] = 'Succesfully modified hook';
 $txt['devtools_success_deletehook'] = 'Succesfully deleted hook';
+
+$txt['devtools_error_archive_generation'] = 'Unable to generate archive';
+$txt['devtools_extension_zip'] = 'ZIP';
+$txt['devtools_extension_tgz'] = 'TGZ';

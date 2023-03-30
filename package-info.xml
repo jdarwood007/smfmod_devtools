@@ -2,11 +2,19 @@
 <package-info xmlns="http://www.simplemachines.org/xml/package-info" xmlns:smf="http://www.simplemachines.org/">
 	<id>sleepy:devtools</id>
 	<name>Developer Tools</name>
-	<version>1.0.3</version>
+	<version>1.1</version>
 	<type>modification</type>
 
-	<upgrade from="1.0.2" for="2.1.*">
-		<require-file name="DevTools-Packages.php" destination="$sourcedir" />
+	<upgrade from="1.0.*" for="2.1.*">
+		<require-file name="DevTools.php" destination="$sourcedir" />
+		<require-dir name="DevTools" destination="$sourcedir" />
+		<remove-file name="$sourcedir/DevTools-Packages.php" error="skip" />
+		<remove-file name="$sourcedir/DevTools-Hooks.php" error="skip" />
+
+		<require-file name="DevTools.template.php" destination="$themedir" />
+		<require-file name="DevTools.js" destination="$themes_dir/default/scripts" />
+
+		<require-file name="languages/DevTools.english.php" destination="$themes_dir/default/languages" />
 		<require-file name="languages/DevTools.spanish_es.php" destination="$themes_dir/default/languages" />
 		<require-file name="languages/DevTools.spanish_latin.php" destination="$themes_dir/default/languages" />
 		<require-file name="languages/DevTools.russian.php" destination="$themes_dir/default/languages" />
@@ -15,11 +23,9 @@
 	<install for="SMF 2.1.*">
 		<readme>README.txt</readme>
 		<require-file name="DevTools.php" destination="$sourcedir" />
-		<require-file name="DevTools-Packages.php" destination="$sourcedir" />
-		<require-file name="DevTools-Hooks.php" destination="$sourcedir" />
+		<require-dir name="DevTools" destination="$sourcedir" />
 
 		<require-file name="DevTools.template.php" destination="$themedir" />
-
 		<require-file name="DevTools.js" destination="$themes_dir/default/scripts" />
 
 		<require-file name="languages/DevTools.english.php" destination="$themes_dir/default/languages" />
@@ -46,13 +52,10 @@
 		<remove-file name="$themes_dir/default/languages/DevTools.spanish_latin.php" />
 		<remove-file name="$themes_dir/default/languages/DevTools.russian.php" />
 
+		<remove-file name="$themedir/DevTools.template.php" />
 		<remove-file name="$themes_dir/default/scripts/DevTools.js" />
 
-		<remove-file name="$themedir/DevTools.template.php" />
-
 		<remove-file name="$sourcedir/DevTools.php" />
-		<remove-file name="$sourcedir/DevTools-Packages.php" />
-		<remove-file name="$sourcedir/DevTools-Hooks.php" />
+		<remove-dir destination="$sourcedir/DevTools" />
 	</uninstall>
-
 </package-info>
