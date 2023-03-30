@@ -91,6 +91,10 @@ function devtools_formhandler(e) {
 
 /* Fixes links on the popup to use ajax */
 function devtools_links(e) {
+	// If we need to skip the popup window, don't do anything.
+	if ($(this).attr('data-nopopup') && ($(this).attr('data-nopopup')) == "true")
+		return;
+
 	e.preventDefault();
 	e.stopPropagation();
 
