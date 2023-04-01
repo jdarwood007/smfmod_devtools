@@ -2,10 +2,10 @@
 <package-info xmlns="http://www.simplemachines.org/xml/package-info" xmlns:smf="http://www.simplemachines.org/">
 	<id>sleepy:devtools</id>
 	<name>Developer Tools</name>
-	<version>1.1.1</version>
+	<version>1.1.2</version>
 	<type>modification</type>
 
-	<upgrade from="1.1" for="2.1.*">
+	<upgrade from="1.1-1.1.1" for="2.1.*">
 		<require-file name="DevTools.php" destination="$sourcedir" />
 		<require-file name="DevTools/DevTools-File.php" destination="$sourcedir/DevTools" />
 		<require-file name="languages/DevTools.russian.php" destination="$themes_dir/default/languages" />
@@ -62,7 +62,7 @@
 		<remove-file name="$themes_dir/default/scripts/DevTools.js" />
 
 		<remove-file name="$sourcedir/DevTools.php" />
-		<remove-dir destination="$sourcedir/DevTools" />
+		<remove-dir name="$sourcedir/DevTools" />
 	</uninstall>
 
 	<devtools>
