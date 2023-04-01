@@ -28,7 +28,7 @@ class DevTools
 	private array $smcFunc;
 	/* This is array in "theory" only.  SMF sometimes will null this when pulling from cache and causes an error */
 	private ?array $modSettings;
-	private array $txt;
+	private ?array $txt;
 	/* Sometimes in SMF, this is null, which is unusal for a boolean */
 	private ?bool $db_show_debug;
 

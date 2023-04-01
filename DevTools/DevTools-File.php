@@ -40,6 +40,11 @@ class DevToolsFiles
 	private string $packageInfoName = 'package-info.xml';
 
 	/*
+	 * This is the package id of dev tools, used to hide itself from being modified with under normal circumstances
+	*/
+	private string $devToolsPackageID = 'sleepy:devtools';
+
+	/*
 	 * The extensions we support.
 	*/
 	private array $extensions = ['tgz', 'zip'];
@@ -246,13 +251,14 @@ class DevToolsFiles
 		// Handle some substitutions.
 		$infoVersion = $this->findPackageInfoVersion($infoFile);
 		$infoName = $this->findPackageInfoName($infoFile);
+
 		$packageName = strtr($packageName, [
-			'{VERSION}' => $infoVersion,
+			'{CUSTOMIZATION-NAME}' => preg_replace('~\s~i', '-', $infoName),
+			'{CUSTOMIZATION_NAME}' => preg_replace('~\s~i', '_', $infoName),
+			'{CUSTOMIZATION NAME}' => $infoName,
 			'{VERSION-}' => str_replace('.', '-', $infoVersion),
 			'{VERSION_}' => str_replace('.', '_', $infoVersion),
-			'{CUSTOMIZATION-NAME}' => preg_replace('~\s~i', '-', $packageName),
-			'{CUSTOMIZATION_NAME}' => preg_replace('~\s~i', '_', $packageName),
-			'{CUSTOMIZATION NAME}' => $packageName,
+			'{VERSION}' => $infoVersion,
 		]);
 
 		$className = 'DevToolsFile' . mb_convert_case($this->getRequestProvider(), MB_CASE_TITLE, 'UTF-8') . mb_convert_case($this->getRequestedExtension(), MB_CASE_TITLE, 'UTF-8');
