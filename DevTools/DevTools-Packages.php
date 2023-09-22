@@ -597,7 +597,7 @@ class DevToolsPackages
 		// package_put/get_contents in Subs-Package.php
 		return array_map(function($op) use ($src, $dst) {
 			// Let us know the writable status.
-			$op['isw'] = package_chmod($op[$dst]);
+			$op['isw'] = !package_chmod($op[$dst]);
 
 			if (is_dir($op[$src]))
 				$op['res'] = copytree($op[$src], $op[$dst]);

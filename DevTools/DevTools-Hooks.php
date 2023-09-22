@@ -298,7 +298,7 @@ class DevToolsHooks
 			array_filter(
 				$this->modSettings,
 				function ($value, $key) {
-					return substr($key, 0, 10) === 'integrate_' && !empty($value) && (!empty($this->modSettings['dt_showAllHooks']) || strpos($value, 'DevTools') === false);
+					return substr($key, 0, 10) === 'integrate_' && !empty($value);
 				},
 				ARRAY_FILTER_USE_BOTH
 			)
@@ -308,6 +308,9 @@ class DevToolsHooks
 		foreach ($temp as $hookName => $rawFuncs)
 			foreach ($rawFuncs as $func)
 			{
+				if (empty($this->modSettings['dt_showAllHooks']) && stripos($func, 'DevTools') !== false)
+					continue;
+
 				$hookParsedData = parse_integration_hook($hookName, $func);
 
 				$hooks[] = [
